@@ -1,0 +1,143 @@
+@import 'tailwindcss';
+
+/* Enable `dark:` utilities both from the OS setting AND from an explicit
+   `.dark` class, so specific areas (e.g. the Intelligence Hub) can be forced
+   dark regardless of the viewer's system theme. */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    @slot;
+  }
+
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+}
+
+/* Brand palette used via `brand`/`brand-dark` utility colors, e.g. bg-brand */
+@theme {
+  /* Theme: Dark Neumorphic with Neon Accents */
+  --color-zinc-950: #0B0C10; /* Deep Black Canvas */
+  --color-zinc-900: #1A1B23; /* Cards & Panels */
+  --color-zinc-800: #292A33; /* Borders & Hover */
+  --color-zinc-700: #393A45;
+  --color-zinc-600: #5C5D6B;
+  --color-zinc-500: #9CA3AF; /* Muted Text */
+  --color-zinc-400: #D1D5DB;
+  --color-zinc-300: #E5E7EB;
+
+  --color-brand: #00E5FF; /* Neon Cyan Hero */
+  --color-brand-dark: #00B4CC;
+  --color-brand-light: #66EEFF;
+  --color-brand-soft: rgba(0, 229, 255, 0.1);
+  
+  /* Custom App Tokens */
+  --color-btn-bg: #001D49;
+  --color-btn-text: #D5FBFF;
+  --color-map-bg: #e9ebee;
+  
+  --text-micro: 10px;
+  --text-tiny: 13px;
+  
+  --spacing-sidebar: 248px;
+  --spacing-sidebar-collapsed: 88px;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+
+  /* Enterprise SaaS Typography Scale */
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 14px;
+  --text-sm--line-height: 20px;
+  --text-base: 16px;
+  --text-base--line-height: 24px;
+  --text-lg: 20px;
+  --text-lg--line-height: 28px;
+  --text-xl: 28px;
+  --text-xl--line-height: 36px;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+/* Hide white scrollbars globally */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Used by the Detention Watch intelligence page */
+@keyframes slideUp {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* =========================================
+   NEW NEON NEUMORPHIC THEME CLASSES
+   ========================================= */
+
+/* Glass Panels / Cards */
+.glass-panel {
+  @apply bg-zinc-900 border border-zinc-800/50 shadow-lg relative overflow-hidden;
+  /* Soft inner glow */
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05),
+              0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Neon Text Glow */
+.glow-text {
+  text-shadow: 0 0 10px var(--color-brand-soft), 0 0 20px var(--color-brand);
+}
+.glow-text-orange {
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.2), 0 0 20px rgba(245, 158, 11, 0.8);
+}
+.glow-text-green {
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.2), 0 0 20px rgba(16, 185, 129, 0.8);
+}
+
+/* Glowing Border effect for Active state */
+.glow-border {
+  position: relative;
+}
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 10px var(--color-brand-soft), inset 0 0 5px var(--color-brand-soft);
+  pointer-events: none;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
