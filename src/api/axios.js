@@ -3,7 +3,7 @@
 const demoUser = {
   id: 'demo-user',
   email: 'demo@asman.local',
-  role: 'SUPER_ADMIN',
+  role: 'ADMIN',
   isEmailVerified: true,
   profile: { name: 'Demo Administrator', avatarUrl: null },
 }
