@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { notificationService } from '../../api/services/notificationService.js'
 import { useAuth } from '../../features/auth/context/AuthContext.jsx'
@@ -40,7 +40,7 @@ export default function NotificationPopover({ buttonClassName }) {
     [notifications],
   )
 
-  const fetchNotifications = async (currentOrgId = orgId) => {
+  const fetchNotifications = useCallback(async (currentOrgId = orgId) => {
     try {
       setLoading(true)
       const params = { limit: 20 }
@@ -76,13 +76,13 @@ export default function NotificationPopover({ buttonClassName }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [isAdmin, orgId])
 
   useEffect(() => {
-    fetchNotifications()
-    const interval = setInterval(() => fetchNotifications(orgId), 60000)
+    void fetchNotifications()
+    const interval = setInterval(fetchNotifications, 60000)
     return () => clearInterval(interval)
-  }, [isAdmin, orgId])
+  }, [fetchNotifications])
 
   const handleNotificationClick = (notification) => {
     if (!notification.isRead) {

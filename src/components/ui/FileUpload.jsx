@@ -34,7 +34,7 @@ export default function FileUpload({
       if (onUploadComplete) {
         onUploadComplete(uploadedFile)
       }
-    } catch (err) {
+    } catch {
       // Error is handled by hook
     } finally {
       if (fileInputRef.current) {
@@ -66,7 +66,7 @@ export default function FileUpload({
       if (onUploadComplete) {
         onUploadComplete(uploadedFile)
       }
-    } catch (err) {
+    } catch {
       // Error is handled by hook
     }
   }

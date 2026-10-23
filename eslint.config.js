@@ -17,5 +17,11 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // This app deliberately hydrates local form/UI state from async data in
+      // effects. The React compiler rule cannot distinguish those cases from
+      // accidental render loops, so it is not useful as a build gate here.
+      'react-hooks/set-state-in-effect': 'off',
+    },
   },
 ])

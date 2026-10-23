@@ -14,7 +14,7 @@ export function useFfiDetentionCenters() {
     retry: 1,
   })
 
-  const centers = query.data ?? []
+  const centers = useMemo(() => query.data ?? [], [query.data])
 
   const counts = useMemo(() => {
     const next = {

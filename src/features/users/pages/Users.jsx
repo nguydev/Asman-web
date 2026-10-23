@@ -81,7 +81,7 @@ export default function Users() {
     return () => {
       cancelled = true
     }
-  }, [deepLinkUserId, setSearchParams])
+  }, [deepLinkUserId, searchParams, setSearchParams])
 
   const fetchStats = async () => {
     try {
@@ -121,7 +121,7 @@ export default function Users() {
   }, [page, activeTab, searchQuery])
 
   useEffect(() => {
-    fetchStats()
+    void fetchStats()
   }, [])
 
   useEffect(() => {
@@ -138,7 +138,7 @@ export default function Users() {
       closeDetail()
       fetchStats()
       toast.success('User suspended successfully.')
-    } catch (error) {
+    } catch {
       toast.error('Failed to suspend user.')
     }
   }
@@ -151,7 +151,7 @@ export default function Users() {
       setUsers((prev) => prev.map(u => u.id === user.id ? { ...u, status: newStatus } : u))
       fetchStats()
       toast.success(`User ${isSuspended ? 'reactivated' : 'suspended'} successfully.`)
-    } catch (error) {
+    } catch {
       toast.error(`Failed to ${isSuspended ? 'reactivate' : 'suspend'} user.`)
     }
   }
@@ -163,7 +163,7 @@ export default function Users() {
       setUsers((prev) => prev.map(u => u.id === userId ? { ...u, isDeleted: true } : u))
       fetchStats()
       toast.success('User deleted successfully.')
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete user.')
     }
   }
@@ -174,7 +174,7 @@ export default function Users() {
       setUsers((prev) => prev.map(u => u.id === userId ? { ...u, isDeleted: false } : u))
       fetchStats()
       toast.success('User restored successfully.')
-    } catch (error) {
+    } catch {
       toast.error('Failed to restore user.')
     }
   }
@@ -258,12 +258,15 @@ export default function Users() {
               </tr>
             ) : (
               users.map((u) => {
-                let statusKey = 'normal'
-                if (u.isDeleted) statusKey = 'deleted'
-                else if (!u.isEmailVerified) statusKey = 'pending'
-                else if (u.isActive) statusKey = 'active'
-                else if (u.status === 'ACTIVE') statusKey = 'normal'
-                else statusKey = u.status?.toLowerCase() || 'normal'
+                const statusKey = u.isDeleted
+                  ? 'deleted'
+                  : !u.isEmailVerified
+                    ? 'pending'
+                    : u.isActive
+                      ? 'active'
+                      : u.status === 'ACTIVE'
+                        ? 'normal'
+                        : u.status?.toLowerCase() || 'normal'
 
                 return (
                   <tr key={u.id} className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50">

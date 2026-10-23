@@ -48,10 +48,10 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      if (socket) {
-        socket.disconnect()
-        setSocket(null)
-      }
+      setSocket((currentSocket) => {
+        currentSocket?.disconnect()
+        return null
+      })
       setLiveDrivers(new Map())
       setLiveSosAlerts(new Map())
       setSosAlertQueue([])

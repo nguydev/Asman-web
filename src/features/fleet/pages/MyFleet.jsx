@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Icon from '../../../components/common/Icon.jsx'
 import { Button } from '../../../components/ui/Button.jsx'
 import GoogleMapView from '../../../components/GoogleMapView.jsx'
 import { useMapLocations } from '../../../hooks/useMapLocations.js'

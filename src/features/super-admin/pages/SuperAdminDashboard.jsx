@@ -117,8 +117,7 @@ function IntelligenceMap() {
   const [showLegend, setShowLegend] = useState(true)
   const [viewport, setViewport] = useState(null)
   const handleViewportChange = useCallback((next) => setViewport(next), [])
-  const { markers, isClustered, counts, isLoading, isFetching, error } =
-    useMapLocations(viewport)
+  const { markers, isClustered, counts } = useMapLocations(viewport)
 
   const mapStats = [
     {

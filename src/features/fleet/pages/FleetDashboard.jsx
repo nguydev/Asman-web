@@ -284,12 +284,13 @@ export default function FleetDashboard() {
     },
   })
 
-  const statsValues = dashboard?.stats ?? {}
   const activity = dashboard?.driverActivity ?? []
   const recentSos = dashboard?.recentSos ?? []
 
   const stats = useMemo(
-    () => [
+    () => {
+      const statsValues = dashboard?.stats ?? {}
+      return [
       {
         key: 'drivers',
         label: 'Active Drivers',
@@ -322,8 +323,9 @@ export default function FleetDashboard() {
         accent: 'red',
         trend: 'Alerts',
       },
-    ],
-    [isLoading, statsValues],
+      ]
+    },
+    [isLoading, dashboard],
   )
 
   return (

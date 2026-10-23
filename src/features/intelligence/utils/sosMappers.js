@@ -62,14 +62,11 @@ export function parseCoordinate(val) {
     }
     const e = val.e !== undefined ? val.e : 0
     const decimalPos = e + 1
-    let resStr = ''
-    if (decimalPos <= 0) {
-      resStr = '0.' + '0'.repeat(-decimalPos) + digits
-    } else if (decimalPos >= digits.length) {
-      resStr = digits + '0'.repeat(decimalPos - digits.length)
-    } else {
-      resStr = digits.slice(0, decimalPos) + '.' + digits.slice(decimalPos)
-    }
+    const resStr = decimalPos <= 0
+      ? '0.' + '0'.repeat(-decimalPos) + digits
+      : decimalPos >= digits.length
+        ? digits + '0'.repeat(decimalPos - digits.length)
+        : digits.slice(0, decimalPos) + '.' + digits.slice(decimalPos)
     const n = parseFloat((val.s === -1 ? '-' : '') + resStr)
     return Number.isFinite(n) ? n : null
   }

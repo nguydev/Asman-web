@@ -415,7 +415,6 @@ function CustomZoomControl() {
 
   useEffect(() => {
     if (!map) return
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setZoom(map.getZoom() ?? 4)
     const listener = map.addListener('zoom_changed', () => {
       setZoom(map.getZoom() ?? 4)
@@ -602,7 +601,10 @@ function FitBoundsOnce({ markers, onComplete }) {
   const map = useMap()
   const doneRef = useRef(false)
   const onCompleteRef = useRef(onComplete)
-  onCompleteRef.current = onComplete
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete
+  }, [onComplete])
 
   useEffect(() => {
     if (!map || doneRef.current || markers.length < 1) return

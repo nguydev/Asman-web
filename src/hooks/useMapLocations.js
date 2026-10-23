@@ -61,8 +61,8 @@ export function useMapLocations(viewport) {
     refetchOnReconnect: false,
   })
 
-  const apiMarkers = data?.markers ?? []
-  const apiClusters = data?.clusters ?? []
+  const apiMarkers = useMemo(() => data?.markers ?? [], [data])
+  const apiClusters = useMemo(() => data?.clusters ?? [], [data])
   const zoom = debouncedViewport?.zoom ?? 0
   const useClusters = zoom < 10 && apiClusters.length > 0
 

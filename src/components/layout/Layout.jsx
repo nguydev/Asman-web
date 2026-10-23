@@ -23,7 +23,6 @@ export default function Layout() {
   // Always close the overlay drawer when the route changes (e.g. after the
   // user picks a nav item and moves to a normal, chrome-wrapped page).
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDrawerOpen(false)
   }, [location.pathname])
 
