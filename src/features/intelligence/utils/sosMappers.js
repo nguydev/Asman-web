@@ -187,7 +187,7 @@ export function mapSosIncident(inc) {
   }
 }
 
-/** Extract incident array from a list API response (axios response or body). */
+/** Extract incident array from a local UI data response or body. */
 export function extractIncidentList(res) {
   const body = res?.data ?? res
   const payload = body?.data ?? body

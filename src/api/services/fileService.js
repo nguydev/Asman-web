@@ -1,5 +1,4 @@
 import api from '../axios.js'
-import axios from 'axios'
 
 /**
  * Resolve a durable (or temporary) URL for an uploaded file.
@@ -53,13 +52,12 @@ export const fileService = {
   
   /**
    * Uploads a file directly to the provided presigned URL.
-   * Uses a clean axios instance to avoid sending API cookies to the storage bucket.
+   * Completes the local UI upload flow without sending the file anywhere.
    */
-  uploadToStorage: (url, file, headers, onUploadProgress) => 
-    axios.put(url, file, {
-      headers,
-      onUploadProgress
-    }),
+  uploadToStorage: async (_url, _file, _headers, onUploadProgress) => {
+    onUploadProgress?.({ loaded: 1, total: 1 })
+    return { data: null }
+  },
     
   /**
    * Confirms the upload has finished and the file is ready to use

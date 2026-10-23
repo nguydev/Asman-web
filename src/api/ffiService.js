@@ -1,43 +1,3 @@
-const FFI_GRAPHQL_URL =
-  import.meta.env.VITE_FFI_GRAPHQL_URL || '/ffi/api/graphql'
-
-const GET_DETENTION_CENTERS = `
-  query GetDetentionCenters {
-    detentionCenters {
-      id
-      name
-      address
-      latitude
-      longitude
-      website
-      phoneNumber
-      facilityOwner {
-        id
-        name
-      }
-      facilityType {
-        id
-        name
-        description
-        typeCode
-        detailCode
-      }
-      facilityOperator {
-        id
-        name
-      }
-      iceFieldOffice {
-        id
-        name
-        address
-      }
-      policies
-      createdAt
-      updatedAt
-    }
-  }
-`
-
 /** Bucket used by Intelligence Hub capacity/type filters. */
 export function ffiTypeBucket(center) {
   const code = (center.typeCode || '').toUpperCase()
@@ -110,32 +70,5 @@ export function mapFfiDetentionCenter(raw) {
 }
 
 export async function fetchDetentionCenters() {
-  const response = await fetch(FFI_GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      operationName: 'GetDetentionCenters',
-      variables: {},
-      query: GET_DETENTION_CENTERS,
-    }),
-  })
-
-  if (!response.ok) {
-    throw new Error(`FFI GraphQL failed: ${response.status}`)
-  }
-
-  const json = await response.json()
-  if (json?.errors?.length) {
-    throw new Error(json.errors[0]?.message || 'FFI GraphQL error')
-  }
-
-  const rows = json?.data?.detentionCenters
-  if (!Array.isArray(rows)) return []
-
-  return rows
-    .map(mapFfiDetentionCenter)
-    .filter((c) => c.lat != null && c.lng != null)
+  return []
 }
