@@ -4,6 +4,15 @@ import { profileService } from '../../../api/services/profileService.js'
 
 const STORAGE_KEY = 'asman.auth.user'
 
+function normalizeUser(user) {
+  if (!user || typeof user !== 'object') return null
+
+  return {
+    ...user,
+    name: user.name || user.profile?.name || user.email || 'User',
+    avatar: user.avatar || user.profile?.avatarUrl || null,
+  }
+}
 
 const AuthContext = createContext(null)
 
@@ -11,7 +20,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
-      return raw ? JSON.parse(raw) : null
+      return raw ? normalizeUser(JSON.parse(raw)) : null
     } catch {
       return null
     }
@@ -27,7 +36,7 @@ export function AuthProvider({ children }) {
       const response = await authService.login({ email: email.trim().toLowerCase(), password })
 
       const resData = response.data
-      const safeUser = resData.data
+      const safeUser = normalizeUser(resData.data)
 
       setUser(safeUser)
       return { ok: true, user: safeUser }
@@ -55,7 +64,7 @@ export function AuthProvider({ children }) {
       await authService.verifyEmailOtp({ email, code })
       // If we are already logged in (user exists in context), just mark it verified
       if (user) {
-        const fullUser = { ...user, isEmailVerified: true }
+        const fullUser = normalizeUser({ ...user, isEmailVerified: true })
         setUser(fullUser)
         return { ok: true, user: fullUser }
       }
@@ -64,7 +73,7 @@ export function AuthProvider({ children }) {
       // but we have cookies. We can use authService.me() to get the role.
       const meRes = await profileService.me()
       const userData = meRes.data?.data || meRes.data
-      const fullUser = { ...userData, email, name, isEmailVerified: true }
+      const fullUser = normalizeUser({ ...userData, email, name, isEmailVerified: true })
       setUser(fullUser)
       return { ok: true, user: fullUser }
     } catch (err) {
